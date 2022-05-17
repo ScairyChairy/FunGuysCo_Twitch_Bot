@@ -21,3 +21,14 @@ async def event_ready():
 if __name__ == "__main__":
     print("BOT NICK:", os.environ['BOT_NICK'],)
     bot.run()
+
+# This is a test to see if !bald will work
+@bot.command(name='bald')
+    async def bald(ctx):
+        await ctx.send('Wayn is bald!')
+
+
+# This is a !bad test to see if the command will work
+@bot.command(name='bad')
+    async def bad(ctx):
+        await ctx.send('Wayn is bad at Apex and Val')
