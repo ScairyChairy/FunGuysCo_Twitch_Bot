@@ -1,23 +1,38 @@
 import os # for importing env vars for the bot to use
 from twitchio.ext import commands
+from dotenv import load_dotenv
 
-bot = commands.Bot(
-    # set up the bot
-    irc_token=os.environ['TMI_TOKEN'],
-    client_id=os.environ['CLIENT_ID'],
-    nick=os.environ['BOT_NICK'],
-    prefix=os.environ['BOT_PREFIX'],
-    initial_channels=[os.environ['CHANNEL']]
-)
+load_dotenv()
+
+class Bot(commands.Bot):
+    def __init__(self):
+        super().__init__(token=os.environ['ACCESS_TOKEN'], prefix='!', initial_channels=['drjuicyplays'])
+
+    async def event_ready(self):
+        print(f'Logged in as | {self.nick}')
+        print(f'User id is | {self.user_id}')
+
+    @commands.command()
+    async def test(self, ctx: commands.Context):
+        await ctx.send(f'Ban me. I am testing a bot :)')
+    
+    @commands.command(name='bald')
+    async def bald(self, ctx: commands.Context):
+        await ctx.send('Wayn is bald!')
 
 
-@bot.event
-async def event_ready():
-    'Called once when the bot goes online.'
-    print(f"{os.environ['BOT_NICK']} is online!")
-    ws = bot._ws  # this is only needed to send messages within event_ready
-    await ws.send_privmsg(os.environ['CHANNEL'], f"/me has landed!")
+    @commands.command(name='bad')
+    async def bad(self, ctx: commands.Context):
+        await ctx.send('Wayn is bad at Apex and Val')
+
+    @commands.command(name='wayn')
+    async def wayn(self, ctx: commands.Context):
+        await ctx.send('Wayn is ugly')
+
+    @commands.command(name='best')
+    async def best(self, ctx: commands.Context):
+        await ctx.send('Chair is best')
 
 if __name__ == "__main__":
-    print("BOT NICK:", os.environ['BOT_NICK'],)
+    bot = Bot()
     bot.run()
